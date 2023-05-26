@@ -1,7 +1,7 @@
 const errorHandler = (error, request, response, next) => {
-  console.log('error message: ', error.message)
-  console.log('error name: ', error.name)
-  console.log('errors: ', error.errors)
+  // console.log('error message: ', error.message)
+  // console.log('error name: ', error.name)
+  // console.log('errors: ', error.errors)
   if (error.message.includes('properties of null')) {
     return response.status(400).json({ error: error.message })
   }
@@ -24,6 +24,12 @@ const errorHandler = (error, request, response, next) => {
   }
   if (error.message === 'Unauthorized') {
     return response.status(401).json({ error: error.message })
+  }
+  if (error.message.includes('earlier than 1991')) {
+    return response.status(400).json({ error: error.message })
+  }
+  if (error.message.includes('future year')) {
+    return response.status(400).json({ error: error.message })
   }
 
   next(error)
