@@ -1,6 +1,6 @@
 const router = require('express').Router()
-const { Op } = require('sequelize')
-const { User, Blog } = require('../models')
+const { tokenExtractor } = require('../util/middleware')
+const { User, Blog, Session } = require('../models')
 
 router.post('/', async (req, res, next) => {
   const newUser = await User.create(req.body)
@@ -48,10 +48,24 @@ router.put('/:userName', async (req, res, next) => {
   const user = await User.findOne({ where: { userName: req.params.userName } })
   console.log(user)
   if (!user) {
-    throw Error('User not found')
+    throw new Error('User not found')
   } else {
     user.userName = req.body.userName
     await user.save()
+    res.json(user)
+  }
+})
+
+router.put('/:id/disable', async (req, res, next) => {
+  console.log('params.id', req.params.id)
+  const user = await User.findByPk(req.params.id)
+  console.log(user)
+  if (!user) {
+    throw new Error('User not found')
+  } else {
+    user.disabled = req.body.disabled
+    await user.save()
+    await Session.destroy({ where: { userId: user.id } })
     res.json(user)
   }
 })

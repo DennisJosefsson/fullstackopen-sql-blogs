@@ -37,7 +37,7 @@ module.exports = {
             isEmail: true,
           },
         },
-        password: { type: DataTypes.STRING },
+        password: { type: DataTypes.STRING, allowNull: false },
         created_at: {
           allowNull: false,
           type: DataTypes.DATE,

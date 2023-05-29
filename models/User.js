@@ -19,12 +19,13 @@ User.init(
         isEmail: true,
       },
     },
-    password: { type: DataTypes.STRING },
+    password: { type: DataTypes.STRING, allowNull: false },
+    disabled: { type: DataTypes.BOOLEAN, defaultValue: false },
   },
   {
     sequelize,
     underscored: true,
-    timestamps: true,
+    timestamps: false,
     modelName: 'user',
   }
 )
